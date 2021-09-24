@@ -29,31 +29,33 @@ import androidx.navigation.compose.rememberNavController
 
 val items = listOf(
     Screen.Home,
-    Screen.Dashboard)
+    Screen.Dashboard
+)
 
 @Composable
-fun BottomBar(navController : NavController){
+fun BottomBar(navController: NavController) {
     BottomNavigation(
         elevation = 5.dp,
-        backgroundColor =  MaterialTheme.colors.primarySurface,
-    contentColor =  contentColorFor(backgroundColor)){
+        backgroundColor = MaterialTheme.colors.primarySurface,
+        contentColor = contentColorFor(backgroundColor)
+    ) {
 
         items.map {
             BottomNavigationItem(
-                icon= {
+                icon = {
                     Icon(
                         painter = painterResource(id = it.icon),
                         contentDescription = it.title
                     )
                 },
-                label= {
+                label = {
                     Text(
                         text = it.title
                     )
                 },
                 selected = false,
-                selectedContentColor= Color.White,
-                unselectedContentColor= Color.White.copy(alpha = 0.4f),
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color.White.copy(alpha = 0.4f),
                 onClick = {
                     navController.navigate(it.route)
                 }
@@ -64,30 +66,36 @@ fun BottomBar(navController : NavController){
 }
 
 @Composable
-fun BottomBarMain(navController : NavHostController){
-    NavHost(navController = navController, startDestination = Screen.Home.route){
-        composable(Screen.Home.route){
+fun BottomBarMain(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Screen.Home.route) {
+        composable(Screen.Home.route) {
             ConversationHomeScreen(messages = SampleData.conversationSample)
         }
-        composable(Screen.Dashboard.route){
+        composable(Screen.Dashboard.route) {
             DashboardScreen()
         }
     }
 }
 
 @Composable
-fun MainView(){
+fun MainView() {
     val navController = rememberNavController()
-    Scaffold(bottomBar = { BottomBar(navController) }) {
-        BottomBarMain(navController = navController)
+    Scaffold(
+        bottomBar = { BottomBar(navController) },
+        topBar = {   TopBar() }) {
+        Box(modifier = Modifier.padding(it)){
+            BottomBarMain(navController = navController)
+        }
     }
 }
 
 @Composable
 fun ConversationHomeScreen(messages: List<Message>) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background)){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
         LazyColumn {
             items(messages) { message ->
                 MessageCard(msg = message)
@@ -115,16 +123,19 @@ fun MessageCard(msg: Message) {
         val surfaceColor: Color by animateColorAsState(targetValue = if (isExpanded) MaterialTheme.colors.primary else MaterialTheme.colors.surface)
 
         Column(Modifier.clickable { isExpanded = !isExpanded }) {
-            Row(Modifier.fillMaxWidth()){
+            Row(Modifier.fillMaxWidth()) {
                 Text(
                     text = msg.author,
                     Modifier.weight(1f),
                     color = MaterialTheme.colors.secondaryVariant,
-                    style = MaterialTheme.typography.subtitle2)
-                CompositionLocalProvider( LocalContentAlpha provides ContentAlpha.medium) {
+                    style = MaterialTheme.typography.subtitle2
+                )
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
 
-                    Text(text = "3 minutes ago",
-                        style = MaterialTheme.typography.subtitle2)
+                    Text(
+                        text = "3 minutes ago",
+                        style = MaterialTheme.typography.subtitle2
+                    )
                 }
             }
 
@@ -156,14 +167,18 @@ fun MessageCard(msg: Message) {
 
 
 @Composable
-fun DashboardScreen(){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background)){
-        Text(text = Screen.Dashboard.title,
+fun DashboardScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
+        Text(
+            text = Screen.Dashboard.title,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center),
             color = MaterialTheme.colors.primary,
-            fontSize = 20.sp)
+            fontSize = 20.sp
+        )
     }
 }

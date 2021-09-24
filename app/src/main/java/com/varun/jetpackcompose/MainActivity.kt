@@ -20,8 +20,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
 data class Message(val author: String, val body: String)
 
 @Preview
@@ -33,6 +31,7 @@ data class Message(val author: String, val body: String)
 @Composable
 fun PreviewConversation() {
     JetpackComposeTheme {
+        TopBar()
         ConversationHomeScreen(messages = SampleData.conversationSample)
 
     }
